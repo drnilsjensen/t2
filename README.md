@@ -77,7 +77,7 @@ This will change in the future and be announced, together with more documentatio
 
 ## Licence
 
-T2 Copyright (c) 2023 Nils Jensen, njsplus(at)gmx.de, all parts if not stated otherwise
+T2 Copyright (c) 2023 Nils Jensen, njsplus(at)gmx.de, all parts if not stated otherwise.
 This software is under GNUPL 3.0
 
 ## Credits
