@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Content-type: text/html"
+echo ""
+# mind the dots
+echo `./t2q .local:8000 "$QUERY_STRING"` 
+

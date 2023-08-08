@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="de-DE">
+<head>
+    <meta charset="UTF-8" />
+    
+    <link rel="pingback" href="https://www.jensen-optik.de/xmlrpc.php" />
+    <script>
+    var themeHasJQuery = !!window.jQuery;
+</script>
+<script src="https://www.jensen-optik.de/wp-content/cache/minify/8f9da.js"></script>
+
+<script>
+    window._$ = jQuery.noConflict(themeHasJQuery);
+</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--[if lte IE 9]>
+<link rel="stylesheet" type="text/css" href="https://www.jensen-optik.de/wp-content/themes/Jensen20180119/layout.ie.css" />
+<script src="https://www.jensen-optik.de/wp-content/themes/Jensen20180119/layout.ie.js"></script>
+<![endif]-->
+<link class="" href='//fonts.googleapis.com/css?family=Cookie:regular&subset=latin' rel='stylesheet' type='text/css'>
+<script src="https://www.jensen-optik.de/wp-content/cache/minify/69998.js"></script>
+
+
+    
+    <title>Home - Jensen Augenoptik</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v13.3 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="Jensen Augenoptik - Ihr zuverlässiger Optiker für Halstenbek, Schenefeld, Pinneberg und Hamburg. Service rund um Brille, Gläser, Fassung, Sehtest und vieles mehr."/>
+<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+<link rel="canonical" href="https://www.jensen-optik.de/" />
+<meta property="og:locale" content="de_DE" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Home - Jensen Augenoptik" />
+<meta property="og:description" content="Jensen Augenoptik - Ihr zuverlässiger Optiker für Halstenbek, Schenefeld, Pinneberg und Hamburg. Service rund um Brille, Gläser, Fassung, Sehtest und vieles mehr." />
+<meta property="og:url" content="https://www.jensen-optik.de/" />
+<meta property="og:site_name" content="Jensen Augenoptik" />
+<meta property="og:image" content="https://www.jensen-optik.de/wp-content/uploads/2018/01/article-image.jpg" />
+<meta property="og:image:secure_url" content="https://www.jensen-optik.de/wp-content/uploads/2018/01/article-image.jpg" />
+<meta property="og:image:width" content="2000" />
+<meta property="og:image:height" content="500" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="Jensen Augenoptik - Ihr zuverlässiger Optiker für Halstenbek, Schenefeld, Pinneberg und Hamburg. Service rund um Brille, Gläser, Fassung, Sehtest und vieles mehr." />
+<meta name="twitter:title" content="Home - Jensen Augenoptik" />
+<meta name="twitter:image" content="https://www.jensen-optik.de/wp-content/uploads/2018/01/article-image.jpg" />
+<script type='application/ld+json' class='yoast-schema-graph yoast-schema-graph--main'>{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.jensen-optik.de/#website","url":"https://www.jensen-optik.de/","name":"Jensen Augenoptik","inLanguage":"de-DE","description":"Seit 36 Jahren Ihr Optiker in Halstenbek","potentialAction":[{"@type":"SearchAction","target":"https://www.jensen-optik.de/?s={search_term_string}","query-input":"required name=search_term_string"}]},{"@type":"ImageObject","@id":"https://www.jensen-optik.de/#primaryimage","inLanguage":"de-DE","url":"https://www.jensen-optik.de/wp-content/uploads/2018/01/article-image.jpg","width":2000,"height":500},{"@type":"WebPage","@id":"https://www.jensen-optik.de/#webpage","url":"https://www.jensen-optik.de/","name":"Home - Jensen Augenoptik","isPartOf":{"@id":"https://www.jensen-optik.de/#website"},"inLanguage":"de-DE","primaryImageOfPage":{"@id":"https://www.jensen-optik.de/#primaryimage"},"datePublished":"2018-01-19T07:23:02+00:00","dateModified":"2023-06-04T07:05:56+00:00","description":"Jensen Augenoptik - Ihr zuverl\u00e4ssiger Optiker f\u00fcr Halstenbek, Schenefeld, Pinneberg und Hamburg. Service rund um Brille, Gl\u00e4ser, Fassung, Sehtest und vieles mehr.","potentialAction":[{"@type":"ReadAction","target":["https://www.jensen-optik.de/"]}]}]}</script>
+<!-- / Yoast SEO plugin

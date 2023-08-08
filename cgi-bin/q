@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Content-type: text/html"
+echo "Cache-Control: private,max-age=1800"
+echo ""
+# mind the dots
+echo `./t2q .local:8000 "$QUERY_STRING"` 
+

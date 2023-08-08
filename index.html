@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>T2</title>
+    <script src="js.js"></script>
+    <style>
+      input {border-radius: 5px; line-height: 1.7;}
+    </style>
+  </head>
+  <body onload="init()" style="font-family: arial;" id="main">
+    <div style="width: 99%; margin: auto; font-family: arial; text-align: left;">
+      <h1>T2 - Die Websuche</h1>
+      <br/>
+    <form action="cgi-bin/q" onsubmit="return validirium()" method="GET">
+      <input type="text" name="p" id="p" placeholder="Such Was Wo"></input>
+      <input type="hidden" name="l" id="l" value=""></input>
+      <input type="hidden" name="r" id="r" value="0"></input>
+      <input type="submit" value="Los!"></input>
+    </form><br>
+    <span id="out"></span>
+    </div>
+    <br>
+    <footer style="font-size: xx-small; color: gray;">&copy; (2023) Nils Jensen (njsplus@gmx.de), Braunschweig. Nutzung auf eigenes Risiko und ohne Gewähr! Es wird sich von allen Links distanziert. Der Rechtsweg ist ausgeschlossen. Es werden nur die Suchanfrage und die IP-Adresse während einer Sitzung erfasst, um den Dienst zu ermöglichen. Es werden keine Daten gespeichert. Schließen Sie das Browserfenster, um den Dienst zu beenden.</footer>
+  </body>
+</html>

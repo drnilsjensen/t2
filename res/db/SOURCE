@@ -1,0 +1,6 @@
+* Data from kfz.net and https://github.com/zauberware/postal-codes-json-xml-csv
+* Unnecessary columns (GPS, community #) removed and joined with German KFZ signs
+* Data processed with PostgresSQL (see db.sql.gz for dump)
+
+Thanks all contributors, 08.08.2023 nj!
+
