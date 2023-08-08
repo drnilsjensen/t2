@@ -1,8 +1,8 @@
-# N2 - Open, tiny web search engine
+# T2 - Open, tiny web search engine
 
 ## Overview
 
-N2 is for educational purposes and research. Use at your own risk!
+T2 is for educational purposes and research. Use at your own risk!
 The search engine is written in plain C under GNU/Linux (Ubuntu) and
 it is composed of a crawler/indexer (t2/t2sc) and simple web front end (t2q).
 t2res is for resetting portions of the index.
@@ -12,7 +12,7 @@ The library curl from libcurl.se is used.
 
 ## Algorithms
 
-N2 employs a linguistic-specific form of fuzzy hashing and reverse indexing that is currently
+T2 employs a linguistic-specific form of fuzzy hashing and reverse indexing that is currently
 under development. Most relevant data is in main memory (<2 GB).
 Some sites data is stored in BLOB files with each site consuming just the first 4K and no client-side
 metadata. URLs are numbered instead of explicitly stored.
