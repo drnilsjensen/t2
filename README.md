@@ -25,7 +25,7 @@ Entries nearby the location are marked with '*' in the search output.
 
 ## Code quality (as of this pre-alpha release, work in progress)
 
-Lots of C code blunder to offer ;-) Needs lot of cleaning, code checking and documentation.
+Lots of C+HTML+JS code blunder to offer ;-) Needs lot of cleaning, code checking and documentation.
 Caching may not be necessary and is turned off by default.
 Sitemaps might be generated if none available in the future.
 No profile is read under .t2/.profile, but flexible customization is planned for the future.
