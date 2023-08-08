@@ -65,7 +65,7 @@ example: ./t2 de 0
 5) Call the web client at [http://127.0.0.1:8001](http://127.0.0.1:8001);
 apart from entering queries with some geo code (e.g. the Postleitzahl, looked up from client's LocalStorage)
 you can evaluate Javascript by putting the query in brackets. Use (!...) to evaluate JS and to put it in Web storage for
-automatization/customization purposes. Push the search button to jump forward by +10 entries.
+automation/customization purposes. Push the search button to jump forward by +10 entries.
 Enter a new query to reset.
 
 6) Finish by calling stop_test_environment.sh and sudo ./umount_ram.sh
