@@ -45,7 +45,7 @@ Don't use other instances of python3 concurrently as we will kill blindly some p
 
 1) Download and install/download T2 in a folder of your choice, go to that folder with cd.
 Make sure mydefs.h contains the correct configuration for either https oder http (testing).
-Call 'make', that generates t2, t2src, t2res, t2q. ./ram is by intention empty, as we'll use this as
+Call 'make', that generates t2, t2sc, t2res, t2q. ./ram is by intention empty, as we'll use this as
 a fast filesystem mounting point.
 
 2) Run sudo setup_test_hosts_ONCE.sh. WARNING: this modifies /etc/hosts for some dummy setups and should be called only *once*!
