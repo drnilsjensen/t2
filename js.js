@@ -5,7 +5,7 @@
 let csv = null;
 let branchen = null;
 
-/* handcrafted shebangs */
+/* handcrafted shebangs, with some easter eggs */
 function shebang(httphead, url, tld) {
     if (url.includes("wiki")) {
 	let words = prepare(url, "wikipedia", "wiki");
@@ -190,17 +190,22 @@ function glueck() {
     }
 }
 
+/* expects non-empty Array of char */
+function is_code(c) {
+    return (c[0] >= '0' && c[0] <= '9');
+}
+
 /* this replaces e.g. WF with 38xxx codes etc. */
 function localize(s) {
     if (!csv) return s;
     let tmp = prepare(s, "", "");
-    if (tmp[2]) {
+    if (tmp[2] && !is_code(tmp[2])) {
 	let x = csv.indexOf(tmp[2].toUpperCase());
 	if (x > 0) {
 	    tmp[2] = csv[x-1];
 	    s = tmp[0] + ' ' + tmp[1];
 	}
-    } else if (tmp[1]) {
+    } else if (tmp[1] && !is_code(tmp[1])) {
 	let x = csv.indexOf(tmp[1].toUpperCase());
 	if (x > 0) {
 	    tmp[1] = csv[x-1];
@@ -210,10 +215,10 @@ function localize(s) {
     // undo upper case from prepare
     s = s.toLowerCase();
     l.value = Number(tmp[2]);
-    if (l.value == 'NaN' || l.value.length != 5) {
+    if (l.value === null || l.value == 'NaN' || l.value.length < 4) {
 	l.value = Number(tmp[1]);
     }
-    if (l.value == 'NaN' || l.value.length != 5) {
+    if (l.value === null || l.value == 'NaN' || l.value.length < 4) {
 	l.value = 0;
     }
     return s;
