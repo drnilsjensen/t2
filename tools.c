@@ -118,25 +118,33 @@ int isempty(char *sz) {
 /* transform diphtongs, unusual letters and such */
 void boil_special(char *out, char *conv) {
   int k = 0;
-  for (int i = 0; conv[i]; ++i) {
+  for (int i = 0; conv[i] && i < BLOCK && k < BLOCK - 1; ++i) {
     if (conv[i] == 'p' && conv[i + 1] == 'h') {
       conv[i] = 'f';
       conv[i + 1] = '*';
     }
     if (conv[i] == 'q') {
       conv[i] = 'k';
+      /* ugly */
+      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
       conv[i + 1] = conv[i + 1] ? 'u' : '\0';
     }      
     if (conv[i] == 'x') {
       conv[i] = 'k';
+      /* ugly */
+      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
       conv[i + 1] = conv[i + 1] ? 's' : '\0';
-    }      
+    }
     if (conv[i] == 'z') {
       conv[i] = 't';
+      /* ugly */
+      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
       conv[i + 1] = conv[i + 1] ? 's' : '\0';
     }      
     if (conv[i] == 'ß') {
       conv[i] = 's';
+      /* ugly */
+      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
       conv[i + 1] = conv[i + 1] ? 's' : '\0';
     }
     out[k++] = conv[i];
@@ -147,7 +155,7 @@ void boil_special(char *out, char *conv) {
 /* clamp vowels and some other symbols, MAGIC */
 void boil_vowels(char *out, char *conv) {
   int k = 0;
-  for (int i = 0; conv[i]; ++i) {
+  for (int i = 0; conv[i] && i < BLOCK && k < BLOCK - 1; ++i) {
     char c = ' ';
     switch(conv[i]) {
     case 'b': c = 'b'; break;

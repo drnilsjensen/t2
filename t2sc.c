@@ -32,6 +32,13 @@ static void filldb(void) {
   h = fopen("t2deep.dat", "rb");
   if (h) fread(crwldbsub, sizeof(int), SIZ * PLZ, h);
   if (h) fclose(h);
+  h = fopen("tld.dat", "rb");
+  if (h) {
+    for (int i = 0; i < NUM; ++i) {
+      fread(idx[i].data, sizeof(char), BLOCK, h);
+    }
+    fclose(h);
+  }
   h = fopen("robots.dat", "rb");
   if (h) {
     for (int i = 0; i < NUM; ++i) {
@@ -120,24 +127,99 @@ static void piggyimprint(int i, int offset, const char *tld) {
   memcpy(sits[i].data, n, 5);
 }
 
+static char *lw(char *to, const char *what, int len) {
+  if (to && len > 0) {
+    strncpy(to, what, len);
+    to[len] = '\0';
+    return to += len;
+  }
+  return to;
+}
+
+/* simulate a (local) sitemap fetch for an absent sitemap */
+static void generate_sitemap(char *p, char *source, const char *prefix) {
+  const char *delim = "\"";
+  const char *sheader = "<?xml ?><urlset>";
+  const char *opener = "<url><loc>";
+  const char *closer = "</loc></url>";
+  const char *end = "</urlset>\n";
+  const char *atag = "<a href=\"";
+  const int z = strlen(opener) + strlen(prefix) + strlen(closer) + strlen(end) + 1;
+  char *protsep = 0; /* for finding protocol URLs with protocol, e.g. javascript, outgoing http(s) */
+  char *tok = 0;
+  if (!p) return;
+  char *begin = p;
+  p = lw(p, sheader, strlen(sheader));
+  while(source) {
+    source = strstr(source, atag);
+    if (source) {
+      int len = 0;
+      source += strlen(atag);
+      tok = source + 1;
+      /* just find if necessary */
+      if (!protsep || protsep < tok) {
+	protsep = strchr(tok, ':');
+      }
+      tok = strstr(tok, delim);
+      len = tok - source;
+      if (len > 0 && len < SLEN && (BLOCK - (p - begin)) > (len + z)) { /* sanity */
+	if (!protsep || protsep > tok) { /* the separator could be behind the delim */
+	  p = lw(p, opener, strlen(opener));
+	  p = lw(p, prefix, strlen(prefix));
+	  p = lw(p, source, len);
+	  p = lw(p, closer, strlen(closer));
+	}
+      }
+      source = tok;
+    }
+  }
+  p = lw(p, end, strlen(end));
+  *p = '\0';
+}
+
 /* get up to #DEEP sub pages as indexed by sitemap */
 static void crawl_main(int offset, const char *tld) {
   for (int i = 0; i < NUM; ++i) {
     if (bots[i].data) {
       const char *term = "Sitemap: ";
+      const char *disallow = "Disallow: /\n";
+      const char *noindex = "<meta name=\"robots\" content=\"noindex>";
       char *s = 0;
       char url[SLEN + 1] = {'\0'};
-      /* robots.txt? */
-      if ((s = strstr(bots[i].data, term))) {
-	s += strlen(term);
-	/* something wrong, skip */
-	if (s - bots[i].data >= BLOCK) break;
+      int autogenerate = FALSE;
+      if (strstr(bots[i].data, disallow) || strstr(idx[i].data, noindex)) {
+	idx[i].data[0] = '\0'; /* DON'T INDEX */
+	s = 0;
+      } else {
+	/* robots.txt allows and has sitemap? */
+	s = strstr(bots[i].data, term);
+      }
+      if (s) {
+	s += strlen(term); /* get URL after Sitemap: */
+      } else {
+	s = idx[i].data[0] ? HTTPHEAD : 0; /* dummy */
+      }
+      if (s) {
+	/* something wrong, autogenerate */
+	if (s - bots[i].data >= BLOCK || s < bots[i].data) {
+	  autogenerate = TRUE;
+	}
 	/* get sitemap url */
 	sscanf(s, "%80s", url);
 	if (strstr(url, HTTPHEAD) == url) {
-	  printf("GET: %s\n", url);
 	  /* at the moment, just supporting 1 sitemap per website */
-	  cget(0, url, &sits[i]);
+	  if (autogenerate) {
+	    char site[SLEN + 1] = "";
+	    strcpy(site, HTTPHEAD);
+	    vary(&site[strlen(HTTPHEAD)], i + offset, strlen(pattern2));
+	    strncat(site, tld, SLEN - strlen(site));
+	    strncat(site, "/", SLEN - strlen(site));
+	    sits[i].read = BLOCK;
+	    generate_sitemap(sits[i].data, idx[i].data, site);
+	  } else {
+	    printf("GET: %s\n", url);
+	    cget(0, url, &sits[i]); /* this can fail, but don't try to heal for now */
+	  }
 	  /* is it there? */
 	  if (sits[i].read > 0) {
 	    /* get all interesting site urls */
