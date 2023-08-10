@@ -70,6 +70,8 @@ Enter a new query to reset.
 
 6) Finish by calling stop_test_environment.sh and sudo ./umount_ram.sh
 
+alternative 4) the script crawl_index_all_rr.sh is for mass crawling.
+
 ## Community
 
 This project is public but I'm not accepting code contributions yet.
