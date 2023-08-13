@@ -18,10 +18,7 @@ Some sites data is stored in BLOB files with each site consuming just the first 
 metadata. URLs are numbered instead of explicitly stored.
 robots.txt is stored, and each 1st sitemap, if available.
 The algorithms try to read the /impressum (imprint) URL to determine a city code (just DE-PLZ yet)
-that is stored in the first 5 bytes in each sitemap bucket, as the information
-there is always assumed to be redundant ('<?xml').
-This is correlated with the 1st 3 bytes of the l-parameter in t2q.
-Entries nearby the location are marked with '*' in the search output.
+that is stored in the first 5 bytes in each sitemap bucket.
 
 ## Code quality (as of this pre-alpha release, work in progress)
 
