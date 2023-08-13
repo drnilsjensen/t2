@@ -111,41 +111,79 @@ void strtolower(char *out, char *conv) {
     ;
 }
 
+/* null or nothing? */
 int isempty(char *sz) {
   return !sz || !*trim(sz);
+}
+
+/* swap */
+void xswap(char *a, char *b) {
+  if (!a || !b) return;
+  *a ^= *b;
+  *b ^= *a;
+  *a ^= *b;
+}
+
+/* convert number to text (simple) */
+const char *convert(const char *from) {
+  static const char *s[] ={"null ",
+	     "eins ", "tswei ",
+	     "drei ", "vier ",
+	     "fuenf ", "sechs ",
+	     "sieben ", "acht ",
+	     "neun "};
+  int i = 0;
+  if (from && isdigit(*from)) {
+    i = *from - '0';
+    return s[i];
+  } else return "";
+}
+
+/* verbalize numbers to ca.-values (no exact values) */
+void boil_numbers(char *out, char *conv) {
+  int k = 0;
+  for (int i = 0; conv[i] && i < BLOCK && k < BLOCK - 1; ++i) {
+    /* room? */
+    if (isdigit(conv[i]) && BLOCK - k - 1 >= 8) {
+      const char *sz = convert(&conv[i]);
+      strcpy(out + k, sz);
+      k += strlen(sz);
+    }
+    out[k++] = conv[i];
+  }
+  out[k++] = '\0';
 }
 
 /* transform diphtongs, unusual letters and such */
 void boil_special(char *out, char *conv) {
   int k = 0;
+  char mixedin = 0;
   for (int i = 0; conv[i] && i < BLOCK && k < BLOCK - 1; ++i) {
+    if (mixedin) {
+      out[k++] = mixedin;
+      mixedin = 0;
+      i--; /* correct input index */
+      continue;
+    }
     if (conv[i] == 'p' && conv[i + 1] == 'h') {
       conv[i] = 'f';
       conv[i + 1] = '*';
     }
     if (conv[i] == 'q') {
       conv[i] = 'k';
-      /* ugly */
-      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
-      conv[i + 1] = conv[i + 1] ? 'u' : '\0';
+      mixedin = 'u';
     }      
     if (conv[i] == 'x') {
       conv[i] = 'k';
-      /* ugly */
-      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
-      conv[i + 1] = conv[i + 1] ? 's' : '\0';
+      mixedin = 's';
     }
     if (conv[i] == 'z') {
       conv[i] = 't';
-      /* ugly */
-      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
-      conv[i + 1] = conv[i + 1] ? 's' : '\0';
+      mixedin = 's';
     }      
     if (conv[i] == 'ß') {
       conv[i] = 's';
-      /* ugly */
-      memmove(conv + i + 2, conv + i + 1, BLOCK - i - 2);
-      conv[i + 1] = conv[i + 1] ? 's' : '\0';
+      mixedin = 's';
     }
     out[k++] = conv[i];
   }
@@ -220,8 +258,8 @@ void boil(char *out, char *conv) {
   strtolower(out, conv);
   clamp_src(conv, out);
   boil_special(out, conv);
-  boil_vowels(conv, out);
-  strcpy(out, conv);
+  boil_numbers(conv, out);
+  boil_vowels(out, conv);
 }
 
 /* just tidy html/xml */

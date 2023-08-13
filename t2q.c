@@ -186,11 +186,11 @@ int main(int argc, char **argv) {
   if (argc > 2) {
     int begin = 0;
     int slots = 10;
-    char in[SLEN + 1] = {'\0'};
-    char in2[SLEN + 1] = {'\0'};
-    char combi[SLEN + 1] = {'\0'};
-    char out[SLEN + 1] = {'\0'};
-    char out2[SLEN + 1] = {'\0'};
+    char in[BLOCK + 1] = {'\0'};
+    char in2[BLOCK + 1] = {'\0'};
+    char combi[BLOCK + 1] = {'\0'};
+    char out[BLOCK + 1] = {'\0'};
+    char out2[BLOCK + 1] = {'\0'};
     int locator = 0;
     int id = 0;
     int id2 = 0;
@@ -202,7 +202,7 @@ int main(int argc, char **argv) {
     FILE *cache = 0;
     init();
     filldb();
-    sscanf(client, "p=%30[a-zA-Z]", in);
+    sscanf(client, "p=%30[a-zA-Z0-9]", in);
     char *ptr = 0;
     while (isempty(in2) && (ptr = index(client, '+'))) {
       sscanf(ptr, "+%30[a-zA-Z]", in2);

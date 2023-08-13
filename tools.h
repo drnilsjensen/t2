@@ -31,8 +31,17 @@ char *trim(char *inout);
 /* is empty string? */
 int isempty(char *inout);
 
+/* swap */
+void xswap(char *a, char *b);
+
+/* convert number to text */
+const char *convert(const char *from);
+
 /* to lower please */
 void strtolower(char *out, char *conv);
+
+/* verbalize numbers to ca.-values (no exact values) */
+void boil_numbers(char *out, char *conv);
 
 /* transform diphtongs, unusual letters and such */
 void boil_special(char *out, char *conv);
