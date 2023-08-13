@@ -99,6 +99,18 @@ void locs(const char *sz, char to[DEEP][SLEN + 1]) {
   }
 }
 
+/* find nth repetition of char in string sz, ending by \0 */
+char *strnthchrnul(char *sz, char c, int n) {
+  if (!sz || !*sz) {
+    return sz;
+  }
+  char *t = strchr(sz, c);
+  if (!t) t = strchr(sz, '\0');
+  if (n < 2 || !t || !*t) return t;
+  else return strnthchrnul(t+1, c, n-1);
+}
+
+/* trim leading whitespaces */
 char *trim(char *sz) {
   while (isspace((unsigned char) *sz))
     sz++;

@@ -23,8 +23,6 @@ cr_t idx[NUM];
 cr_t bots[NUM]; /* for subsite retrieval, not robots! */
 static char subs[DEEP][SLEN + 1];
 
-static const char *pname = "ram/cache/%8x_%8x.html";
-
 /* init index */
 static void filldb(void) {
   FILE *h = fopen("ram/t2.dat", "rb");
@@ -108,10 +106,8 @@ static int rank(int hit, int slots, int begin, int secondterm, int id, int id2, 
 	  details(&idx[0], &bots[0], site);
 	  strtolower(tmp, idx[0].data);
 	  clamp_src(tmp2, tmp);
-	  /* mark nearby places with '*' */
 	  sscanf(bots[0].data, "%d", &siteloc);
-	  fprintf(cache, "&nbsp;%s [...] [%c]<br>\n", trim(tmp2), (siteloc / 100 == locator / 100) ? '*' : ' ');
-	  
+	  fprintf(cache, "&nbsp;%s [...] [%d]<br>\n", trim(tmp2), siteloc / 1000);
 	  if (subsite) {
 	    /* get all interesting site urls */
 	    locs(bots[0].data, subs);
@@ -130,11 +126,8 @@ static int rank(int hit, int slots, int begin, int secondterm, int id, int id2, 
 }
 
 static void precache(FILE **h, int q, int q2, int locator, int begin) {
-  char cname[SLEN + 1] = "";
   if (!h) return;
-  snprintf(cname, SLEN - 1, pname, q, q2);
-  *h = fopen(cname, "wr+b");
-  if (!*h) *h = stdout;
+  *h = stdout;
   fprintf(*h, "%s", "<!doctype html>\n<html>\n<head>\n                                         \
       <meta charset='UTF-8'>\n                                                                 \
       <title>T2</title><script src='../js.js'></script>                                        \
@@ -160,25 +153,11 @@ static void precache(FILE **h, int q, int q2, int locator, int begin) {
 static void postcache(FILE **h) {
   if (!h || !*h) return;
   fprintf(*h, "%s", "\n</ol></div></body></html>\n");
-  if (*h != stdout) {
-    fclose(*h);
-    *h = 0;
-  }
+  *h = 0;
 }
 
-static int getcache(int q, int q2) {
-  int fail = 1;
-  char cname[SLEN + 1] = "";
-  char output[BLOCK + 1] = "";
-  snprintf(cname, SLEN - 1, pname, q, q2);
-  FILE *h = fopen(cname, "rb");
-  if (h) {
-    fread(output, sizeof(char), BLOCK, h);
-    printf("%s", output);
-    fclose(h);
-    fail = 0;
-  }
-  return fail;
+static int getcache(int q, int q2, int begin) {
+  return 1;
 }
 
 /* well, ...main */
@@ -231,7 +210,7 @@ int main(int argc, char **argv) {
       id = id2;
       id2 = 0;
     }
-    if (getcache(id, id2)) {
+    if (getcache(id, id2, begin)) {
       secondterm = !!id2;
       precache(&cache, id, id2, locator, begin);
       if (id3 != id) {
@@ -242,7 +221,7 @@ int main(int argc, char **argv) {
 	fprintf(cache, "%s\n", "<span style='margin-left: -20px'>Leider 0 Treffer, versuchen Sie bis zu zwei andere Begriffe.</span><br>");
       }
       postcache(&cache);
-      getcache(id, id2);
+      getcache(id, id2, begin);
     }
     uninit();
   } else {

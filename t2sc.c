@@ -226,7 +226,8 @@ static void crawl_main(int offset, const char *tld) {
 	    locs(sits[i].data, subs);
 	    for (int k = 0; k < DEEP; ++k) {
 	      char *url2 = subs[k];
-	      if (*url2) {
+	      char *tt = strstr(strnthchrnul(url, '.', 2), tld) + strlen(tld);
+	      if (url2 && *url2 && 0 == strncmp(url, url2, tt - url)) {
 		int tmpidx = k + 1;
 		printf("GET: %d. %s\n", tmpidx, url2);
 		idx[i].read = 0;

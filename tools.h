@@ -25,6 +25,9 @@ void clamp_src(char *out, char *conv);
 /* extract loc's from sitemap */
 void locs(const char *sz, char to[DEEP][SLEN + 1]);
 
+/* find nth repetition of char in string sz, ending by \0 */
+char *strnthchrnul(char *sz, char c, int n);
+
 /* trim leading whitespaces */
 char *trim(char *inout);
 
