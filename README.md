@@ -69,6 +69,8 @@ Enter a new query to reset.
 
 alternative 4) the script crawl_index_all_rr.sh is for mass crawling.
 
+optionally, before 5) zip sites.dat, tld.dat, robots.dat and mount them with mountavfs (apt-package avfs)
+
 ## Community
 
 This project is public but I'm not accepting code contributions yet.
