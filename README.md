@@ -84,7 +84,7 @@ This software is under GNUPL 3.0
 ## Credits
 
 Some geo data: kfz.net (with permission), simonfranzen(@)zauberware.com (in accordance to CCA 4.0; details at ./res/db/SOURCE)
-web tools: libcurl.se, OpenSSL
+web tools: libcurl.se, OpenSSL, avfs
 
 ## Contact
 
