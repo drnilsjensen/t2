@@ -65,7 +65,7 @@ you can evaluate Javascript by putting the query in brackets. Use (!...) to eval
 automation/customization purposes. Push the search button to jump forward by +10 entries.
 Enter a new query to reset.
 
-6) Finish by calling stop_test_environment.sh and sudo ./umount_ram.sh
+6) Finish by calling stop_test_environment.sh and  ./umount_ram.sh
 
 alternative 4) the script crawl_index_all_rr.sh is for mass crawling.
 
