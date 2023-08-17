@@ -1,2 +1,3 @@
 #!/bin/sh
-umount ram
+sudo umount ram
+umountavfs

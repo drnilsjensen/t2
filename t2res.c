@@ -37,7 +37,7 @@ static void dumpdb(void) {
   }
 }
 
-void reset_interval(int offset) {
+void reset_interval(unsigned long int offset) {
   for (int i = 0; i < SIZ * PLZ; ++i) {
     if (crwldb[i] != 0 && crwldb[i] >= offset && crwldb[i] < offset + NUM) {
       crwldb[i] = 0;
@@ -47,7 +47,7 @@ void reset_interval(int offset) {
 }
 
 int main(int argc, char *argv[]) {
-  int offset = argc > 1 ? atoi(argv[1]) : 0;
+  unsigned long int offset = argc > 1 ? atol(argv[1]) : 0;
   filldb();
   reset_interval(offset);
   dumpdb();

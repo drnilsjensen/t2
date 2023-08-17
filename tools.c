@@ -26,8 +26,8 @@ char c_map(int i) {
 }
 
 /* variation by recursion */
-char *r_vary(char *str, int step, int maxn) {
-  if (step <= 0 || maxn <= 0) {
+char *r_vary(char *str, unsigned long int step, unsigned int maxn) {
+  if (step == 0 || maxn == 0) {
     return str;
   }
   char ce[] = {c_map(step % maxn), '\0'};
@@ -35,7 +35,7 @@ char *r_vary(char *str, int step, int maxn) {
 }
 
 /* entry point for enumerating all urls */
-char *vary(char *to, int step, int maxn) {
+char *vary(char *to, unsigned long int step, unsigned int maxn) {
   char domain[SLEN + 1] = {'\0'};
   r_vary(domain, step, maxn);
   strncat(to, domain, SLEN - strlen(to));
@@ -83,7 +83,7 @@ void clamp_src(char *out, char *conv) {
 /* extract loc's from sitemap */
 void locs(const char *sz, char to[DEEP][SLEN + 1]) {
   const char *loc = "<loc>";
-  const char *tok = sz;
+  const char *tok = sz + 11; /* ignore piggypack */
   int i = 0;
   while (tok++) {
     tok = strstr(tok, loc);
@@ -128,13 +128,13 @@ int isempty(char *sz) {
   return !sz || !*trim(sz);
 }
 
-/* swap */
+/* TODO delete 
 void xswap(char *a, char *b) {
   if (!a || !b) return;
   *a ^= *b;
   *b ^= *a;
   *a ^= *b;
-}
+} */
 
 /* convert number to text (simple) */
 const char *convert(const char *from) {
@@ -299,7 +299,7 @@ int cidx(const char *sz) {
 }
 
 /* index all words per webpage p (mind the offset!) */
-void windex(const cr_t *p, int offset, int *crwldb) {
+void windex(const cr_t *p, unsigned long int offset, unsigned int *crwldb) {
   if (p && offset >= 0 && p->read > 0) {
     int slot = p - idx; /* auto-detecting slot (=1st. entry) */
     char conv[BLOCK] = {'\0'};
@@ -314,10 +314,10 @@ void windex(const cr_t *p, int offset, int *crwldb) {
       /* keep first PLZ entries empty for future use */
       for (int rem = 0; rem < ratio && toxel > 0 && !done[toxel / PLZ]; ++rem) {
 	/* linear search for free slot */
-	int *ptr = crwldb + toxel + rem;
+	unsigned int *ptr = crwldb + toxel + rem;
 	if (*ptr == 0) { /* fillable? */
 	  /* this could be a subsite! */
-	  *ptr = slot + offset;
+	  *ptr = (unsigned int)(slot + offset);
 	  break;
 	}
       }

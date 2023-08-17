@@ -27,6 +27,9 @@
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
+#define SELECT(a,b) (((a)>>((b)*8)) & 0xff)
+#define PUT(a,b) (((a)<<((b)*8)))
+
 #define FALSE (0)
 #define TRUE  (1)
 

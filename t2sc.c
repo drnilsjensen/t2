@@ -16,8 +16,8 @@
 char *pattern = "bcdfghjlmnrst";
 char *pattern1 = "aeiou";
 char *pattern2 = "-0123456789abcdefghijklmnopqrstuvwxyz";
-int crwldb[SIZ * PLZ];
-int crwldbsub[SIZ * PLZ];
+unsigned int crwldb[SIZ * PLZ];
+unsigned int crwldbsub[SIZ * PLZ];
 cr_t idx[NUM];
 cr_t bots[NUM];
 static cr_t sits[NUM];
@@ -91,7 +91,11 @@ static void uninit(void) {
   free(current.data);
 }
 
-static void piggyimprint(int i, int offset, const char *tld) {
+/* this saves zip code and upper part of Goedel number in sites.dat data structure, 
+   therefore, we avoid to have the crwldb indexes cope with 64bit entries */
+static void piggyimprint(int i, unsigned long int offset, const char *tld) {
+  /* best use if sizeof(long) = 8 */
+  unsigned int aux = ((i + offset) >> (sizeof(long)*4));
   char url[SLEN + 1] = {'\0'};
   strcpy(url, HTTPHEAD);
   vary(&url[strlen(HTTPHEAD)],i + offset,strlen(pattern2));
@@ -123,10 +127,17 @@ static void piggyimprint(int i, int offset, const char *tld) {
     }
   }
   n[5] = '\0';
-  /* ugly hack, piggyback geocode (PLZ) instead of <?xml */
+  /* ugly hack, piggyback geocode (PLZ) instead of <?xml... doesn't copy terminator */
   memcpy(sits[i].data, n, 5);
+  sits[i].data[5]  = ' '; /* future use: must be ' ' because PLZ could be 6 places long, e.g. in UK */
+  /* big endian, TODO: move this code elsewhere */
+  sits[i].data[6]  = SELECT(aux, 3);
+  sits[i].data[7]  = SELECT(aux, 2);
+  sits[i].data[8]  = SELECT(aux, 1);
+  sits[i].data[9] = SELECT(aux, 0);
 }
 
+/* short-hand write */
 static char *lw(char *to, const char *what, int len) {
   if (to && len > 0) {
     strncpy(to, what, len);
@@ -178,7 +189,7 @@ static void generate_sitemap(char *p, char *source, const char *prefix) {
 }
 
 /* get up to #DEEP sub pages as indexed by sitemap */
-static void crawl_main(int offset, const char *tld) {
+static void crawl_main(unsigned long int offset, const char *tld) {
   for (int i = 0; i < NUM; ++i) {
     if (bots[i].data) {
       const char *term = "Sitemap: ";
@@ -233,9 +244,9 @@ static void crawl_main(int offset, const char *tld) {
 		idx[i].read = 0;
 		/* reusing the same buffer i for each subsite fetch, don't keep it */
 		cget(0, url2, &idx[i]);
-		/* overview ("superset" of all subpages per website) */
+		/* overview ("superset" of all subpages per website) offset+i */
 		windex(&idx[i], offset, crwldb);
-		/* detail */
+		/* detail offset+i+k+1 */
 		windex(&idx[i], tmpidx + offset, crwldbsub);
 	      } /* url in <loc>? */
 	    } /* each <loc> in sitemap */
@@ -248,7 +259,7 @@ static void crawl_main(int offset, const char *tld) {
 }
 
 int main(int argc, char *argv[]) {
-  int offset = argc > 2 ? atoi(argv[2]) : 0;
+  unsigned long int offset = argc > 2 ? atol(argv[2]) : 0;
   char tld[SLEN + 1] = ".";
   init();
   filldb();

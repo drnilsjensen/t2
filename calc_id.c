@@ -12,7 +12,7 @@ cr_t idx[NUM];
 
 int main(int argc, char *argv[]) {
   unsigned long int n = 0;
-  int b = 0;
+  unsigned int b = 0;
   char name[81] = "";
   char twin[81] = "";
   if (argc <= 1) return 0;
@@ -25,10 +25,9 @@ int main(int argc, char *argv[]) {
     if (islower(c)) t = c - 'a' + 1 + 10;
     n = t + n * 37;
   }
-  b = (int)n;
-  if (b < 0) b += INT_MAX;
-  printf("%s: %d %lu %lx\n", name, b, n, n);
+  b = (unsigned int)n;
+  printf("%s: %u %lu 0x%lx\n", name, b, n, n);
   vary(twin, b, 37);
-  printf("int overlaps with: %s\n", (!strcmp(twin, name))? "nothing" : twin);
+  printf("uint overlaps with: %s\n", (!strcmp(twin, name))? "nothing" : twin);
   return 0;
 }

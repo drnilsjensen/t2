@@ -6,7 +6,6 @@
 extern char *pattern;
 extern char *pattern1;
 extern char *pattern2;
-extern int crwldb[];
 extern cr_t idx[];
 extern cr_t bots[];
 
@@ -14,10 +13,10 @@ extern cr_t bots[];
 char c_map(int i);
 
 /* variation by recursion */
-char *r_vary(char *str, int step, int maxn);
+char *r_vary(char *str, unsigned long int step, unsigned int maxn);
 
 /* entry point for enumerating all urls */
-char *vary(char *to, int step, int maxn);
+char *vary(char *to, unsigned long int step, unsigned int maxn);
 
 /* clamp html source */
 void clamp_src(char *out, char *conv);
@@ -33,9 +32,6 @@ char *trim(char *inout);
 
 /* is empty string? */
 int isempty(char *inout);
-
-/* swap */
-void xswap(char *a, char *b);
 
 /* convert number to text */
 const char *convert(const char *from);
@@ -62,6 +58,6 @@ void tidy(char *out, char *conv);
 int cidx(const char *sz);
 
 /* index all words per webpage p (mind the offset!) */
-void windex(const cr_t *p, int offset, int *crwldb);
+void windex(const cr_t *p, unsigned long int offset, unsigned int *crwldb);
 
 #endif

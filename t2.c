@@ -17,7 +17,7 @@
 char *pattern = "bcdfghjlmnrst";
 char *pattern1 = "aeiou";
 char *pattern2 = "-0123456789abcdefghijklmnopqrstuvwxyz";
-int crwldb[SIZ * PLZ];
+unsigned int crwldb[SIZ * PLZ];
 cr_t idx[NUM];
 cr_t bots[NUM];
 
@@ -68,7 +68,7 @@ static void uninit(void) {
 }
 
 /* do main crawl job using curl */
-static void crawl_main(const char *tld, int offset) {
+static void crawl_main(const char *tld, unsigned long int offset) {
   CURLM *cm = 0;
   CURLMsg *msg = 0;
   int msgsleft = -1;
@@ -136,11 +136,11 @@ int main(int argc, char **argv) {
     cget(0, url, &idx[0]);
     printf("RESULT: %s\n", idx[0].data);
   } else { /* crawl chunk of urls */
-    int offset = 0;
+    unsigned long int offset = 0;
     char tld[SLEN + 1] = {'.','\0'};
     if (argc > 2) {
       strncat(tld, argv[1], sizeof(tld) - 2);
-      sscanf(argv[2], "%d", &offset);
+      sscanf(argv[2], "%lu", &offset);
       if (offset < 0) { /* correct wrong offsets */
 	offset = 0;
       }

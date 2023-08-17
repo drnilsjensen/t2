@@ -17,8 +17,8 @@
 char *pattern = "bcdfghjlmnrst";
 char *pattern1 = "aeiou";
 char *pattern2 = "-0123456789abcdefghijklmnopqrstuvwxyz";
-int crwldb[SIZ * PLZ];
-int crwldbsub[SIZ * PLZ];
+unsigned int crwldb[SIZ * PLZ];
+unsigned int crwldbsub[SIZ * PLZ];
 cr_t idx[NUM];
 cr_t bots[NUM]; /* for subsite retrieval, not robots! */
 static char subs[DEEP][SLEN + 1];
@@ -49,10 +49,10 @@ static void uninit(void) {
   }
 }
 
-static int details(cr_t *p, cr_t *p2, int site) {
+static int details(cr_t *p, cr_t *p2, unsigned long int site) {
   /* note: it is inefficient to retrieve the handle for every call */
-  FILE *h = fopen("tld.dat", "rb");
-  FILE *hs = fopen("sites.dat", "rb");
+  FILE *h = fopen("www_data/tld.dat", "rb");
+  FILE *hs = fopen("www_data/sites.dat", "rb");
   int rc = 0;
   if (p) {
     p->read = 0;
@@ -84,30 +84,37 @@ static int details(cr_t *p, cr_t *p2, int site) {
   return !h || rc || !p || !hs || !p2;
 }
 
+static unsigned long int get_aux(char *data) {
+  if (!data) return 0UL;
+  return PUT(data[0], 3) | PUT(data[1], 2) | PUT(data[2], 1) | PUT(data[3], 0);
+}
+
 static int rank(int hit, int slots, int begin, int secondterm, int id, int id2, int locator, char *tld, FILE *cache) {
   char out[SLEN + 1] = "";
   char tmp[BLOCK] = "";
   char tmp2[BLOCK] = "";
   for (int i = 0; hit < slots + begin && i < PLZ; ++i) {
-    int site = crwldb[id + i];
-    int subsite = crwldbsub[id + i];
+    unsigned int site = crwldb[id + i];
+    unsigned int subsite = crwldbsub[id + i];
     /* linear search (PLZ is small) */
     for (int k = 0; k < PLZ; ++k) {
-      int site2 = crwldb[id2 + k];
-      int subsite2 = crwldbsub[id2 + k];
+      unsigned int site2 = crwldb[id2 + k];
+      unsigned int subsite2 = crwldbsub[id2 + k];
       /* do hardcoded join */
       if (site && (!secondterm || site == site2 && subsite == subsite2)) {
 	if (hit++ >= begin) {
 	  int siteloc = 0;
+	  unsigned long int aux = get_aux(bots[0].data + 6); /* after max len PLZ, get 2nd id segment */
+	  unsigned long int fullsite = site + aux;
 	  *out = '\0';
-	  vary(out, site, strlen(pattern2));
+	  vary(out, fullsite, strlen(pattern2));
 	  fprintf(cache, "<li><!--[%d.]--> <a href='%s%s%s'>%s%s%s</a><!--[%d,%d,%d]--></li>\n", hit, HTTPHEAD, out, tld, HTTPHEAD, out, tld, site, subsite ? subsite - site : 0, locator);
 	  *tmp = *tmp2 = '\0';
-	  details(&idx[0], &bots[0], site);
+	  details(&idx[0], &bots[0], fullsite); /* take fullsite if we don't overwrite buckets in sites.dat */
 	  strtolower(tmp, idx[0].data);
 	  clamp_src(tmp2, tmp);
 	  sscanf(bots[0].data, "%d", &siteloc);
-	  fprintf(cache, "&nbsp;%s [...] [%d]<br>\n", trim(tmp2), siteloc / 1000);
+	  fprintf(cache, "&nbsp;%s [...] <span class='zip'>[%d]</span><br>\n", trim(tmp2), siteloc / 1000);
 	  if (subsite) {
 	    /* get all interesting site urls */
 	    locs(bots[0].data, subs);
@@ -131,7 +138,7 @@ static void precache(FILE **h, int q, int q2, int locator, int begin) {
   fprintf(*h, "%s", "<!doctype html>\n<html>\n<head>\n                                         \
       <meta charset='UTF-8'>\n                                                                 \
       <title>T2</title><script src='../js.js'></script>                                        \
-    <style>input {border-radius: 5px; line-height: 1.7;}</style></head>\n<body onload='init()' \
+    <style>input {border-radius: 5px; line-height: 1.7;}\nspan.zip {font-weight: bold;}</style></head>\n<body onload='init()' \
                                                         style='font-family: arial;' id='main'> \
       <div style='width: 99%; margin: auto; font-family: arial; text-align: left;'>            \
       \n\n                                                                                      \
