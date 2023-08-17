@@ -39,7 +39,7 @@ static void dumpdb(void) {
 
 void reset_interval(unsigned long int offset) {
   for (int i = 0; i < SIZ * PLZ; ++i) {
-    if (crwldb[i] != 0 && crwldb[i] >= offset && crwldb[i] < offset + NUM) {
+    if (crwldb[i] != 0 && crwldb[i] >= (unsigned int)offset && crwldb[i] < (unsigned int)(offset + NUM)) {
       crwldb[i] = 0;
       crwldbsub[i] = 0;
     }
