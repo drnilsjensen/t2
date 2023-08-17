@@ -10,8 +10,8 @@
 
 #include "mydefs.h"
 
-int crwldb[SIZ * PLZ];
-int crwldbsub[SIZ * PLZ];
+unsigned int crwldb[SIZ * PLZ];
+unsigned int crwldbsub[SIZ * PLZ];
 
 /* init index */
 static void filldb(void) {
